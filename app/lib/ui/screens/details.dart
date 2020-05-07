@@ -1,7 +1,6 @@
 import 'package:app/global.dart';
 import 'package:app/models/order.dart';
 import 'package:app/models/product.dart';
-import 'package:app/services/api.dart';
 import 'package:app/services/auth.dart';
 import 'package:app/services/order_api.dart';
 import 'package:app/ui/widgets/color_selector.dart';
@@ -86,7 +85,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         "${widget.product.name}",
                         style: Theme.of(context)
                             .textTheme
-                            .headline
+                            .headline5
                             .copyWith(color: Colors.white),
                       ),
                       SizedBox(width: 5),
@@ -98,7 +97,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         "${widget.product.rating}",
                         style: Theme.of(context)
                             .textTheme
-                            .title
+                            .headline6
                             .copyWith(color: Colors.white),
                       ),
                     ],
@@ -115,7 +114,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "Price",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle
+                                  .subtitle2
                                   .copyWith(color: Colors.white70),
                             ),
                             SizedBox(height: 3),
@@ -123,7 +122,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "${widget.product.price}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle
+                                  .subtitle2
                                   .copyWith(color: Colors.white),
                             ),
                             SizedBox(height: 9),
@@ -131,7 +130,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "Color Variant",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle
+                                  .subtitle2
                                   .copyWith(color: Colors.white70),
                             ),
                             SizedBox(height: 3),
@@ -149,7 +148,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "Material",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle
+                                  .subtitle2
                                   .copyWith(color: Colors.white70),
                             ),
                             SizedBox(height: 3),
@@ -157,7 +156,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "${widget.product.material}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle
+                                  .subtitle2
                                   .copyWith(color: Colors.white),
                             ),
                           ],
@@ -182,7 +181,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     "About Chair",
                     style: Theme.of(context)
                         .textTheme
-                        .title
+                        .headline6
                         .copyWith(color: Colors.white70),
                   ),
                   SizedBox(height: 5),
@@ -195,7 +194,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     "Quantity",
                     style: Theme.of(context)
                         .textTheme
-                        .title
+                        .headline6
                         .copyWith(color: Colors.white70),
                   ),
                   SizedBox(height: 11),

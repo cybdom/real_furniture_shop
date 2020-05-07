@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
                 "Login",
                 style: Theme.of(context)
                     .textTheme
-                    .title
+                        .headline6
                     .copyWith(color: Colors.white),
               ),
               SizedBox(height: 9),
@@ -86,7 +86,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                   onPressed: () async {
                     _formKey.currentState.save();
-                    // TODO handle passward reset
                   },
                 ),
               ),
@@ -125,7 +124,7 @@ class LoginScreen extends StatelessWidget {
                     "or",
                     style: Theme.of(context)
                         .textTheme
-                        .title
+                        .headline6
                         .copyWith(color: Colors.white),
                   ),
                   SizedBox(width: 9),
@@ -144,7 +143,7 @@ class LoginScreen extends StatelessWidget {
                     "Don't have an account?",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle
+                        .subtitle2
                         .copyWith(color: Colors.white),
                   ),
                   FlatButton(

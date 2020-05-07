@@ -60,7 +60,7 @@ class _ProductsPageViewState extends State<ProductsPageView> {
                             "${widget.products[i].rating}",
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle
+                                .subtitle2
                                 .copyWith(color: Colors.white),
                           ),
                           Spacer(),
@@ -80,14 +80,14 @@ class _ProductsPageViewState extends State<ProductsPageView> {
                         "${widget.products[i].name}",
                         style: Theme.of(context)
                             .textTheme
-                            .title
+                        .headline6
                             .copyWith(color: Colors.white70),
                       ),
                       Text(
                         "${widget.products[i].price}",
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle
+                            .subtitle2
                             .copyWith(color: Colors.white),
                       )
                     ],

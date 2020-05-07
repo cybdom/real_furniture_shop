@@ -21,7 +21,7 @@ class SignupScreen extends StatelessWidget {
                 "Sign Up",
                 style: Theme.of(context)
                     .textTheme
-                    .title
+                        .headline6
                     .copyWith(color: Colors.white),
               ),
               SizedBox(height: 9),
@@ -155,7 +155,7 @@ class SignupScreen extends StatelessWidget {
                     "or",
                     style: Theme.of(context)
                         .textTheme
-                        .title
+                        .headline6
                         .copyWith(color: Colors.white),
                   ),
                   SizedBox(width: 9),
@@ -174,7 +174,7 @@ class SignupScreen extends StatelessWidget {
                     "Already have an account?",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle
+                        .subtitle2
                         .copyWith(color: Colors.white),
                   ),
                   FlatButton(

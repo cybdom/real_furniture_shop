@@ -1,8 +1,6 @@
-import 'package:app/models/order.dart';
-import 'package:app/models/product.dart';
+
 import 'package:app/services/api.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
 void main() {
   group("Api Test", () {

@@ -36,7 +36,7 @@ class HorizontalCategoryItem extends StatelessWidget {
             SizedBox(height: 3),
             Text(
               "${category.name}",
-              style: Theme.of(context).textTheme.subtitle.copyWith(
+              style: Theme.of(context).textTheme.subtitle2.copyWith(
                   color: active == category.id
                       ? MyColors.accentBlue
                       : Colors.grey),
