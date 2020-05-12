@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-enum LoginStatus { none, loading, idle, loggedIn, error }
+enum LoginStatus { loading, idle, loggedIn, error }
 
 class AuthService with ChangeNotifier {
   String _error = "";
@@ -15,9 +15,9 @@ class AuthService with ChangeNotifier {
   String get error => _error;
   LoginStatus get status => _status;
 
-  retry() {
+  clear() {
     _error = "";
-    _status = LoginStatus.none;
+    _status = LoginStatus.idle;
     _token = "";
     notifyListeners();
   }
@@ -66,7 +66,7 @@ class AuthService with ChangeNotifier {
       await saveToken(token);
       return true;
     } else {
-      _status = LoginStatus.none;
+      _status = LoginStatus.idle;
       notifyListeners();
       return false;
     }
@@ -88,7 +88,7 @@ class AuthService with ChangeNotifier {
       _status = LoginStatus.loggedIn;
       notifyListeners();
     } else {
-      _status = LoginStatus.none;
+      _status = LoginStatus.idle;
       notifyListeners();
     }
   }
@@ -96,7 +96,7 @@ class AuthService with ChangeNotifier {
   logout() async {
     final _storage = FlutterSecureStorage();
     await _storage.delete(key: "token");
-    _status = LoginStatus.none;
+    _status = LoginStatus.idle;
     notifyListeners();
   }
 }

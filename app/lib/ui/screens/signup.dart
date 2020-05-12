@@ -21,7 +21,7 @@ class SignupScreen extends StatelessWidget {
                 "Sign Up",
                 style: Theme.of(context)
                     .textTheme
-                        .headline6
+                    .headline6
                     .copyWith(color: Colors.white),
               ),
               SizedBox(height: 9),
@@ -118,28 +118,51 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 11),
-              RaisedButton(
-                child: Text(
-                  "Sign Up",
-                  style: Theme.of(context)
-                      .textTheme
-                      .button
-                      .copyWith(color: Colors.white),
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    if (await _authService.signup(
-                        username: _username,
-                        email: _email,
-                        password: _password))
-                      Navigator.pushReplacementNamed(context, 'home');
-                  }
+              Consumer<AuthService>(
+                builder: (context, snapshot, _) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (snapshot.status == LoginStatus.error)
+                        Text(
+                          "${snapshot.error}",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: RaisedButton(
+                          child: snapshot.status == LoginStatus.loading
+                              ? SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  "Sign In",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button
+                                      .copyWith(color: Colors.white),
+                                ),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              if (await snapshot.signup(
+                                  username: _username,
+                                  email: _email,
+                                  password: _password))
+                                Navigator.pushReplacementNamed(context, 'home');
+                            }
+                          },
+                          color: MyColors.accentBlue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
                 },
-                color: MyColors.accentBlue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
               ),
               SizedBox(height: 11),
               Row(
@@ -185,7 +208,10 @@ class SignupScreen extends StatelessWidget {
                           .button
                           .copyWith(color: MyColors.accentBlue),
                     ),
-                    onPressed: () => Navigator.pushNamed(context, 'login'),
+                    onPressed: () {
+                      Provider.of<AuthService>(context, listen: false).clear();
+                      Navigator.pushNamed(context, 'login');
+                    },
                   )
                 ],
               )

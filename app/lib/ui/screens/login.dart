@@ -6,7 +6,6 @@ import 'package:app/services/auth.dart';
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<AuthService>(context, listen: false);
     final _formKey = GlobalKey<FormState>();
     String _username, _password;
     return Scaffold(
@@ -21,7 +20,7 @@ class LoginScreen extends StatelessWidget {
                 "Login",
                 style: Theme.of(context)
                     .textTheme
-                        .headline6
+                    .headline6
                     .copyWith(color: Colors.white),
               ),
               SizedBox(height: 9),
@@ -89,26 +88,49 @@ class LoginScreen extends StatelessWidget {
                   },
                 ),
               ),
-              RaisedButton(
-                child: Text(
-                  "Sign In",
-                  style: Theme.of(context)
-                      .textTheme
-                      .button
-                      .copyWith(color: Colors.white),
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    if (await _authService.login(
-                        password: _password, username: _username))
-                      Navigator.pushReplacementNamed(context, 'home');
-                  }
+              Consumer<AuthService>(
+                builder: (context, snapshot, _) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (snapshot.status == LoginStatus.error)
+                        Text(
+                          "${snapshot.error}",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: RaisedButton(
+                          child: snapshot.status == LoginStatus.loading
+                              ? SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  "Sign In",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .button
+                                      .copyWith(color: Colors.white),
+                                ),
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              if (await snapshot.login(
+                                  password: _password, username: _username))
+                                Navigator.pushReplacementNamed(context, 'home');
+                            }
+                          },
+                          color: MyColors.accentBlue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
                 },
-                color: MyColors.accentBlue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
               ),
               SizedBox(height: 11),
               Row(
@@ -154,8 +176,10 @@ class LoginScreen extends StatelessWidget {
                           .button
                           .copyWith(color: MyColors.accentBlue),
                     ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, 'signup'),
+                    onPressed: () {
+                      Provider.of<AuthService>(context, listen: false).clear();
+                      Navigator.pushNamed(context, 'signup');
+                    },
                   )
                 ],
               )

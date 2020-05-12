@@ -5,6 +5,7 @@ import 'package:app/ui/screens/login.dart';
 import 'package:app/ui/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -15,7 +16,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AuthService _authService = AuthService();
-
   @override
   void initState() {
     _authService.getSavedToken();
@@ -32,14 +32,12 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: MyColors.darkBlue,
         ),
-        home: Builder(
-          builder: (context) {
-            final _status =
-                Provider.of<AuthService>(context, listen: false).status;
-            switch (_status) {
+        home: Consumer<AuthService>(
+          builder: (context, snapshot, _) {
+            switch (snapshot.status) {
               case LoginStatus.loggedIn:
                 return HomeScreen();
-              case LoginStatus.none:
+              case LoginStatus.idle:
                 return LoginScreen();
               default:
                 return Scaffold(
