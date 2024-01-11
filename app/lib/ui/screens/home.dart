@@ -15,7 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future _getProducts, _getCategories;
+  late Future<List<Category>> _getCategories;
+  late Future<List<Product>> _getProducts;
   int _activeCategory = 0;
 
   @override
@@ -29,13 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
               ListTile(
                 onTap: () async {
-                  await Provider.of<AuthService>(context, listen: false).logout();
+                  await Provider.of<AuthService>(context, listen: false)
+                      .logout();
                   Navigator.pushReplacementNamed(context, 'login');
                 },
                 title: Text("Logout"),
@@ -53,47 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              title: Container(
-                width: 9,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: MyColors.accentBlue,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
-              title: Container(
-                width: 9,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: MyColors.accentBlue,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
-              title: Container(
-                width: 9,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: MyColors.accentBlue,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Container(
-                width: 9,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: MyColors.accentBlue,
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
             ),
           ],
         ),
@@ -150,8 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Let's find your favorite furniture",
                       style: Theme.of(context)
                           .textTheme
-                        .headline5
-                          .copyWith(color: Colors.white),
+                          .headlineSmall
+                          ?.copyWith(color: Colors.white),
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 9),
@@ -163,21 +133,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             case true:
                               return ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: snapshot.data.length,
+                                itemCount: snapshot.data?.length,
                                 itemBuilder: (context, i) =>
                                     HorizontalCategoryItem(
                                   active: _activeCategory,
-                                  category: snapshot.data[i],
+                                  category: snapshot.data![i],
                                   onTap: () {
                                     setState(() {
-                                      _activeCategory = snapshot.data[i].id;
+                                      _activeCategory = snapshot.data![i].id;
                                     });
                                     _getProducts = Api().getProducts(
-                                        categoryId: snapshot.data[i].id);
+                                        categoryId: snapshot.data![i].id);
                                   },
                                 ),
                               );
-                              break;
                             default:
                               return Center(
                                 child: CircularProgressIndicator(),
@@ -203,10 +172,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           switch (snapshot.hasData) {
                             case true:
                               return ProductsPageView(
-                                products: snapshot.data,
+                                products: snapshot.data!,
                               );
 
-                              break;
                             default:
                               return Center(
                                 child: CircularProgressIndicator(),

@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:app/global.dart';
 
 class HorizontalCategoryItem extends StatelessWidget {
-  final onTap;
-  final active;
+  final Function() onTap;
+  final int active;
   final Category category;
+
   const HorizontalCategoryItem(
-      {Key key, this.onTap, this.active, this.category})
-      : super(key: key);
+      {super.key,
+      required this.onTap,
+      required this.active,
+      required this.category});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,7 +39,7 @@ class HorizontalCategoryItem extends StatelessWidget {
             SizedBox(height: 3),
             Text(
               "${category.name}",
-              style: Theme.of(context).textTheme.subtitle2.copyWith(
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: active == category.id
                       ? MyColors.accentBlue
                       : Colors.grey),

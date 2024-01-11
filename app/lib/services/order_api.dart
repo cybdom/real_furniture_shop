@@ -5,11 +5,11 @@ import 'package:app/models/order.dart';
 import 'package:http/http.dart' as http;
 
 class OrderApi {
-  OrderResponse _response;
+  late OrderResponse _response;
   OrderResponse get response => _response;
-  Future<bool> purchase({Order order, String token}) async {
+  Future<bool> purchase({required Order order, required String token}) async {
     final request = await http.post(
-      "$baseServerUrl/orders",
+      Uri.http(baseServerUrl, '/orders'),
       body: jsonEncode(order.toJson()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

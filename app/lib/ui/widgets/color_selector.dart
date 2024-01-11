@@ -5,8 +5,11 @@ class ColorSelector extends StatefulWidget {
   final int active;
   final Function(int value) onTap;
 
-  const ColorSelector({Key key, this.colors, this.active, this.onTap})
-      : super(key: key);
+  const ColorSelector(
+      {super.key,
+      required this.colors,
+      required this.active,
+      required this.onTap});
 
   @override
   _ColorSelectorState createState() => _ColorSelectorState();

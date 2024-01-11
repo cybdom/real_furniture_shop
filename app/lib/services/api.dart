@@ -7,16 +7,15 @@ import 'package:http/http.dart' as http;
 
 class Api {
   Future<List<Category>> getCategories() async {
-    final response = await http.get("$baseServerUrl/categories");
+    final response = await http.get(Uri.http(baseServerUrl, '/categories'));
     final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
     return parsed.map<Category>((json) => Category.fromJson(json)).toList();
   }
 
   Future<List<Product>> getProducts({categoryId}) async {
     final response = await http.get(
-      categoryId != null
-          ? "$baseServerUrl/categories/$categoryId"
-          : "$baseServerUrl/products",
+      Uri.http(baseServerUrl,
+          categoryId != null ? "/categories/$categoryId" : "/products"),
     );
     final parsed = categoryId != null
         ? jsonDecode(response.body)['products'].cast<Map<String, dynamic>>()
@@ -25,7 +24,9 @@ class Api {
   }
 
   Future<Product> getSingleProduct({productId}) async {
-    final response = await http.get("$baseServerUrl/products/$productId");
+    final response = await http.get(
+      Uri.http(baseServerUrl, "/products/$productId"),
+    );
     return Product.fromJson(jsonDecode(response.body));
   }
 }

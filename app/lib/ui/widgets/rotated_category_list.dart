@@ -3,7 +3,7 @@ import 'package:app/global.dart';
 
 class RotatedCategoryList extends StatefulWidget {
   const RotatedCategoryList({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

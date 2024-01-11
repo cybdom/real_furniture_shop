@@ -13,7 +13,7 @@ import 'package:stripe_payment/stripe_payment.dart';
 class DetailsScreen extends StatefulWidget {
   final Product product;
 
-  const DetailsScreen({Key key, this.product}) : super(key: key);
+  const DetailsScreen({super.key, required this.product});
 
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
@@ -85,8 +85,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         "${widget.product.name}",
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
-                            .copyWith(color: Colors.white),
+                            .headlineSmall
+                            ?.copyWith(color: Colors.white),
                       ),
                       SizedBox(width: 5),
                       Icon(
@@ -97,8 +97,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         "${widget.product.rating}",
                         style: Theme.of(context)
                             .textTheme
-                            .headline6
-                            .copyWith(color: Colors.white),
+                            .titleLarge
+                            ?.copyWith(color: Colors.white),
                       ),
                     ],
                   ),
@@ -114,24 +114,24 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "Price",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(color: Colors.white70),
+                                  .titleSmall
+                                  ?.copyWith(color: Colors.white70),
                             ),
                             SizedBox(height: 3),
                             Text(
                               "${widget.product.price}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(color: Colors.white),
+                                  .titleSmall
+                                  ?.copyWith(color: Colors.white),
                             ),
                             SizedBox(height: 9),
                             Text(
                               "Color Variant",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(color: Colors.white70),
+                                  .titleSmall
+                                  ?.copyWith(color: Colors.white70),
                             ),
                             SizedBox(height: 3),
                             ColorSelector(
@@ -148,16 +148,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               "Material",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(color: Colors.white70),
+                                  .titleSmall
+                                  ?.copyWith(color: Colors.white70),
                             ),
                             SizedBox(height: 3),
                             Text(
                               "${widget.product.material}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(color: Colors.white),
+                                  .titleSmall
+                                  ?.copyWith(color: Colors.white),
                             ),
                           ],
                         ),
@@ -181,8 +181,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     "About Chair",
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(color: Colors.white70),
+                        .titleLarge
+                        ?.copyWith(color: Colors.white70),
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -194,8 +194,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     "Quantity",
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(color: Colors.white70),
+                        .titleLarge
+                        ?.copyWith(color: Colors.white70),
                   ),
                   SizedBox(height: 11),
                   Counter(
@@ -218,17 +218,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(15),
-              child: RaisedButton(
-                color: MyColors.accentBlue,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: MyColors.accentBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
                 child: Text(
                   "Buy Now",
                   style: Theme.of(context)
                       .textTheme
-                      .button
-                      .copyWith(color: Colors.white),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                      .labelLarge
+                      ?.copyWith(color: Colors.white),
                 ),
                 onPressed: () async {
                   widget.product.colors = [
@@ -240,29 +242,31 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         await StripePayment.paymentRequestWithCardForm(
                       CardFormPaymentRequest(),
                     );
-                    final _order = Order(
-                      paymentMethodId: _paymentMethod.id,
-                      address: "My awesome new address",
-                      amount: _amount,
-                      city: "My City",
-                      postalCode: "21345",
-                      product: widget.product.toJson(),
-                    );
+                    if (_paymentMethod.id != null) {
+                      final _order = Order(
+                        paymentMethodId: _paymentMethod.id!,
+                        address: "My awesome new address",
+                        amount: _amount,
+                        city: "My City",
+                        postalCode: "21345",
+                        product: widget.product.toJson(),
+                      );
+                      final _purchaseRequest = await _orderApi.purchase(
+                          order: _order,
+                          token:
+                              Provider.of<AuthService>(context, listen: false)
+                                  .token);
 
-                    final _purchaseRequest = await _orderApi.purchase(
-                        order: _order,
-                        token: Provider.of<AuthService>(context, listen: false)
-                            .token);
-
-                    showDialog(
-                      context: context,
-                      builder: (context) => OrderResultDialog(
-                        orderResponse: _orderApi.response,
-                        success: _purchaseRequest,
-                      ),
-                    );
+                      showDialog(
+                        context: context,
+                        builder: (context) => OrderResultDialog(
+                          orderResponse: _orderApi.response,
+                          success: _purchaseRequest,
+                        ),
+                      );
+                    }
                   } catch (e) {
-                    print(e.message);
+                    print(e.toString());
                   }
                 },
               ),

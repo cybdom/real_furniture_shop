@@ -7,7 +7,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    String _username, _password;
+    String _username = "", _password = "";
     return Scaffold(
       backgroundColor: MyColors.darkBlue,
       body: SafeArea(
@@ -20,8 +20,8 @@ class LoginScreen extends StatelessWidget {
                 "Login",
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
-                    .copyWith(color: Colors.white),
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
               ),
               SizedBox(height: 9),
               Form(
@@ -29,9 +29,9 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      onSaved: (value) => _username = value,
+                      onSaved: (value) => _username = value!,
                       validator: (value) {
-                        if (value.isEmpty)
+                        if (value != null && value.isEmpty)
                           return "Cannot be empty";
                         else
                           return null;
@@ -50,9 +50,9 @@ class LoginScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 11),
                     TextFormField(
-                      onSaved: (value) => _password = value,
+                      onSaved: (value) => _password = value!,
                       validator: (value) {
-                        if (value.isEmpty)
+                        if (value != null && value.isEmpty)
                           return "Cannot be empty";
                         else
                           return null;
@@ -75,16 +75,16 @@ class LoginScreen extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: FlatButton(
+                child: TextButton(
                   child: Text(
                     "Forgot Password?",
                     style: Theme.of(context)
                         .textTheme
-                        .button
-                        .copyWith(color: MyColors.accentBlue),
+                        .labelLarge
+                        ?.copyWith(color: MyColors.accentBlue),
                   ),
                   onPressed: () async {
-                    _formKey.currentState.save();
+                    _formKey.currentState!.save();
                   },
                 ),
               ),
@@ -100,7 +100,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       SizedBox(
                         width: double.infinity,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           child: snapshot.status == LoginStatus.loading
                               ? SizedBox(
                                   height: 15,
@@ -111,20 +111,22 @@ class LoginScreen extends StatelessWidget {
                                   "Sign In",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .button
-                                      .copyWith(color: Colors.white),
+                                      .labelLarge
+                                      ?.copyWith(color: Colors.white),
                                 ),
                           onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
                               if (await snapshot.login(
                                   password: _password, username: _username))
                                 Navigator.pushReplacementNamed(context, 'home');
                             }
                           },
-                          color: MyColors.accentBlue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyColors.accentBlue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                           ),
                         ),
                       ),
@@ -146,8 +148,8 @@ class LoginScreen extends StatelessWidget {
                     "or",
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(color: Colors.white),
+                        .titleLarge
+                        ?.copyWith(color: Colors.white),
                   ),
                   SizedBox(width: 9),
                   Expanded(
@@ -165,16 +167,16 @@ class LoginScreen extends StatelessWidget {
                     "Don't have an account?",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.white),
+                        .titleSmall
+                        ?.copyWith(color: Colors.white),
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       "Sign Up",
                       style: Theme.of(context)
                           .textTheme
-                          .button
-                          .copyWith(color: MyColors.accentBlue),
+                          .labelLarge
+                          ?.copyWith(color: MyColors.accentBlue),
                     ),
                     onPressed: () {
                       Provider.of<AuthService>(context, listen: false).clear();

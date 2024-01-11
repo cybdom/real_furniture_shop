@@ -7,8 +7,8 @@ class OrderResultDialog extends StatelessWidget {
   final OrderResponse orderResponse;
   final bool success;
 
-  const OrderResultDialog({Key key, this.orderResponse, this.success})
-      : super(key: key);
+  const OrderResultDialog(
+      {super.key, required this.orderResponse, required this.success});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class OrderResultDialog extends StatelessWidget {
                 SizedBox(width: 5),
                 Text(
                   success ? "Order Successful" : "Order Failed",
-                  style: Theme.of(context).textTheme.headline5.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.white,
                       ),
                 ),
@@ -40,16 +40,18 @@ class OrderResultDialog extends StatelessWidget {
               orderResponse.message,
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(color: Colors.white),
+                  .titleMedium
+                  ?.copyWith(color: Colors.white),
             ),
             SizedBox(height: 11),
             Align(
               alignment: Alignment.centerRight,
-              child: FlatButton(
+              child: TextButton(
                 child: Text("Done"),
                 onPressed: () => Navigator.pop(context),
-                color: MyColors.accentBlue,
+                style: TextButton.styleFrom(
+                  backgroundColor: MyColors.accentBlue,
+                ),
               ),
             )
           ],

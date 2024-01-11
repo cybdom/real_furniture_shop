@@ -3,14 +3,13 @@ class Order {
   final int amount;
   final Map<String, dynamic> product;
 
-  Order({
-    this.paymentMethodId,
-    this.product,
-    this.address,
-    this.amount,
-    this.postalCode,
-    this.city,
-  });
+  Order(
+      {required this.address,
+      required this.postalCode,
+      required this.city,
+      required this.paymentMethodId,
+      required this.amount,
+      required this.product});
 
   Map<String, dynamic> toJson() => {
         'paymentMethodId': paymentMethodId,
@@ -26,15 +25,12 @@ class OrderResponse {
   final String message;
   final int code;
 
-  OrderResponse({
-    this.message,
-    this.code,
-  });
-
-  factory OrderResponse.fromJson(Map<String, dynamic> json){
+  factory OrderResponse.fromJson(Map<String, dynamic> json) {
     return OrderResponse(
       message: json['message'],
       code: json['code'],
     );
   }
+
+  OrderResponse({required this.message, required this.code});
 }

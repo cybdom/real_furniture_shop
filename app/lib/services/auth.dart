@@ -10,7 +10,7 @@ enum LoginStatus { loading, idle, loggedIn, error }
 class AuthService with ChangeNotifier {
   String _error = "";
   LoginStatus _status = LoginStatus.idle;
-  String _token;
+  late String _token;
   String get token => _token;
   String get error => _error;
   LoginStatus get status => _status;
@@ -26,7 +26,7 @@ class AuthService with ChangeNotifier {
     _status = LoginStatus.loading;
     notifyListeners();
     final response = await http.post(
-      "$baseServerUrl/auth/local",
+      Uri.http(baseServerUrl, '/auth/local'),
       body: jsonEncode({
         'identifier': '$username',
         'password': '$password',
@@ -51,7 +51,7 @@ class AuthService with ChangeNotifier {
     _status = LoginStatus.loading;
     notifyListeners();
     final response = await http.post(
-      "$baseServerUrl/auth/local/register",
+      Uri.http(baseServerUrl, '/auth/local/register'),
       body: jsonEncode({
         "username": "$username",
         'email': '$email',
@@ -83,14 +83,12 @@ class AuthService with ChangeNotifier {
 
   Future getSavedToken() async {
     final _storage = FlutterSecureStorage();
-    _token = await _storage.read(key: "token");
-    if (_token != null) {
-      _status = LoginStatus.loggedIn;
-      notifyListeners();
-    } else {
-      _status = LoginStatus.idle;
-      notifyListeners();
+    final String? storedToken = await _storage.read(key: "token");
+    if (storedToken != null) {
+      _token = storedToken;
     }
+    _status = LoginStatus.loggedIn;
+    notifyListeners();
   }
 
   logout() async {

@@ -6,9 +6,8 @@ import 'package:provider/provider.dart';
 class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _authService = Provider.of<AuthService>(context, listen: false);
     final _formKey = GlobalKey<FormState>();
-    String _email, _password, _username;
+    String _email = "", _password = "", _username = "";
     return Scaffold(
       backgroundColor: MyColors.darkBlue,
       body: SafeArea(
@@ -21,8 +20,8 @@ class SignupScreen extends StatelessWidget {
                 "Sign Up",
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
-                    .copyWith(color: Colors.white),
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
               ),
               SizedBox(height: 9),
               Form(
@@ -30,9 +29,9 @@ class SignupScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      onSaved: (value) => _email = value,
+                      onSaved: (value) => _email = value!,
                       validator: (value) {
-                        if (value.isEmpty)
+                        if (value != null && value.isEmpty)
                           return "Cannot be empty";
                         else
                           return null;
@@ -51,9 +50,9 @@ class SignupScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 11),
                     TextFormField(
-                      onSaved: (value) => _username = value,
+                      onSaved: (value) => _username = value!,
                       validator: (value) {
-                        if (value.isEmpty)
+                        if (value != null && value.isEmpty)
                           return "Cannot be empty";
                         else
                           return null;
@@ -72,10 +71,10 @@ class SignupScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 11),
                     TextFormField(
-                      onSaved: (value) => _password = value,
+                      onSaved: (value) => _password = value!,
                       onChanged: (value) => _password = value,
                       validator: (value) {
-                        if (value.isEmpty)
+                        if (value != null && value.isEmpty)
                           return "Cannot be empty";
                         else
                           return null;
@@ -96,7 +95,9 @@ class SignupScreen extends StatelessWidget {
                     SizedBox(height: 11),
                     TextFormField(
                       validator: (value) {
-                        if (value.isEmpty && value == _password)
+                        if (value != null &&
+                            value.isEmpty &&
+                            value == _password)
                           return "Cannot be empty";
                         else
                           return null;
@@ -130,7 +131,7 @@ class SignupScreen extends StatelessWidget {
                         ),
                       SizedBox(
                         width: double.infinity,
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           child: snapshot.status == LoginStatus.loading
                               ? SizedBox(
                                   height: 15,
@@ -141,12 +142,12 @@ class SignupScreen extends StatelessWidget {
                                   "Sign In",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .button
-                                      .copyWith(color: Colors.white),
+                                      .labelLarge
+                                      ?.copyWith(color: Colors.white),
                                 ),
                           onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
                               if (await snapshot.signup(
                                   username: _username,
                                   email: _email,
@@ -154,9 +155,11 @@ class SignupScreen extends StatelessWidget {
                                 Navigator.pushReplacementNamed(context, 'home');
                             }
                           },
-                          color: MyColors.accentBlue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyColors.accentBlue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                           ),
                         ),
                       ),
@@ -178,8 +181,8 @@ class SignupScreen extends StatelessWidget {
                     "or",
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(color: Colors.white),
+                        .titleLarge
+                        ?.copyWith(color: Colors.white),
                   ),
                   SizedBox(width: 9),
                   Expanded(
@@ -197,16 +200,16 @@ class SignupScreen extends StatelessWidget {
                     "Already have an account?",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.white),
+                        .titleSmall
+                        ?.copyWith(color: Colors.white),
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       "Sign In",
                       style: Theme.of(context)
                           .textTheme
-                          .button
-                          .copyWith(color: MyColors.accentBlue),
+                          .labelLarge
+                          ?.copyWith(color: MyColors.accentBlue),
                     ),
                     onPressed: () {
                       Provider.of<AuthService>(context, listen: false).clear();

@@ -4,7 +4,12 @@ class Counter extends StatelessWidget {
   final add, reduce;
   final int count;
 
-  const Counter({Key key, this.add, this.reduce, this.count}) : super(key: key);
+  const Counter(
+      {super.key,
+      required this.count,
+      required this.add,
+      required this.reduce});
+
   @override
   Widget build(BuildContext context) {
     return Row(

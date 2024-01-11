@@ -5,10 +5,8 @@ import 'package:app/global.dart';
 
 class ProductsPageView extends StatefulWidget {
   final List<Product> products;
-  const ProductsPageView({
-    Key key,
-    this.products,
-  }) : super(key: key);
+
+  const ProductsPageView({super.key, required this.products});
 
   @override
   _ProductsPageViewState createState() => _ProductsPageViewState();
@@ -60,8 +58,8 @@ class _ProductsPageViewState extends State<ProductsPageView> {
                             "${widget.products[i].rating}",
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle2
-                                .copyWith(color: Colors.white),
+                                .titleSmall
+                                ?.copyWith(color: Colors.white),
                           ),
                           Spacer(),
                           GestureDetector(
@@ -80,15 +78,15 @@ class _ProductsPageViewState extends State<ProductsPageView> {
                         "${widget.products[i].name}",
                         style: Theme.of(context)
                             .textTheme
-                        .headline6
-                            .copyWith(color: Colors.white70),
+                            .titleLarge
+                            ?.copyWith(color: Colors.white70),
                       ),
                       Text(
                         "${widget.products[i].price}",
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle2
-                            .copyWith(color: Colors.white),
+                            .titleSmall
+                            ?.copyWith(color: Colors.white),
                       )
                     ],
                   ),

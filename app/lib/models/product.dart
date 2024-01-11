@@ -6,17 +6,6 @@ class Product {
   final String name, description, material, image;
   List<dynamic> colors;
 
-  Product({
-    this.id,
-    this.price,
-    this.rating,
-    this.name,
-    this.description,
-    this.material,
-    this.image,
-    this.colors,
-  });
-
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       colors: json['colors']['colors'],
@@ -29,6 +18,16 @@ class Product {
       rating: json['rating'].toDouble(),
     );
   }
+
+  Product(
+      {required this.colors,
+      required this.id,
+      required this.price,
+      required this.rating,
+      required this.name,
+      required this.description,
+      required this.material,
+      required this.image});
 
   Map<String, dynamic> toJson() => {
         'id': id,
